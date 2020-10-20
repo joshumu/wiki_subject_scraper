@@ -9,6 +9,12 @@ def scrape_wiki_articles(url):
 	body = soup.find('p').getText()
 	linkToScrape = 0
 
+	print(title.text)
+	articleTitles = open("savedArticles.txt", "a+")
+	articleTitles.write(title.text + " - " + body)
+	articleTitles.close()
+	time.sleep(2)
+
 	for link in soup.find(id="bodyContent").find_all('a', href=True):
 		if "/wiki/" in link['href']:
 			print(title.text + "  ")
@@ -20,7 +26,7 @@ def scrape_wiki_articles(url):
 			articleTitles = open("savedArticles.txt", "a+")
 			articleTitles.write(title.text + " - " + body)
 			articleTitles.close()
-			time.sleep(.5)
+			time.sleep(2)
 
 
-scrape_wiki_articles("https://en.wikipedia.org/wiki/Ricardo_Flores_Magón")
+scrape_wiki_articles("https://en.wikipedia.org/wiki/GitHub")
