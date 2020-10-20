@@ -1,0 +1,26 @@
+import requests
+from bs4 import BeautifulSoup
+import time
+
+def scrape_wiki_articles(url):
+	soup = BeautifulSoup(requests.get(url).content, 'html.parser')
+
+	title = soup.find(id="firstHeading")
+	body = soup.find('p').getText()
+	linkToScrape = 0
+
+	for link in soup.find(id="bodyContent").find_all('a', href=True):
+		if "/wiki/" in link['href']:
+			print(title.text + "  ")
+			url = "https://en.wikipedia.org" + link['href']
+			soup = BeautifulSoup(requests.get(url).content, 'html.parser')
+			title = soup.find(id="firstHeading")
+			body = soup.find('p').getText()
+
+			articleTitles = open("savedArticles.txt", "a+")
+			articleTitles.write(title.text + " - " + body)
+			articleTitles.close()
+			time.sleep(.5)
+
+
+scrape_wiki_articles("https://en.wikipedia.org/wiki/Ricardo_Flores_Magón")
